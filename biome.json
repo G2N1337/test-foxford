@@ -1,0 +1,43 @@
+{
+	"$schema": "https://biomejs.dev/schemas/latest/schema.json",
+	"files": {
+		"includes": [
+			"biome.json",
+			"frontend/src/**/*",
+			"frontend/vite.config.ts",
+			"backend/src/**/*",
+			"backend/prisma/**/*",
+			"*.json"
+		]
+	},
+	"formatter": {
+		"enabled": true
+	},
+	"javascript": {
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
+		},
+		"formatter": {
+			"quoteStyle": "single",
+			"jsxQuoteStyle": "double",
+			"trailingCommas": "all",
+			"semicolons": "always"
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"useExhaustiveDependencies": "off"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "off"
+			},
+			"a11y": {
+				"noLabelWithoutControl": "off",
+				"noSvgWithoutTitle": "off"
+			}
+		}
+	}
+}

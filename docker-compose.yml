@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+
+  db:
+    image: postgres:15
+    container_name: tasks_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tasks_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: tasks_backend
+    restart: always
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/tasks_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tasks_db
+      JWT_SECRET_KEY: aodofdsojjogfjoosfdoa
+
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    command: >
+      sh -c "
+        npx prisma migrate deploy &&
+        npm run start:prod
+      "
+
+  frontend:
+    build: ./frontend
+    container_name: tasks_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
+volumes:
+  db_data:
